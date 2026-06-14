@@ -51,3 +51,14 @@ Over-communicating is good. Messy communicating is not. So:
 A short, clean pinned list. A growing map of real Brazil contacts. A handful of high-signal flags. Calm, focused, one-thing-at-a-time. That beats a thousand messages and a graph full of empty nodes every single time.
 
 You've got real gifts here. Let's aim them.
+
+---
+
+## Update 2026-06-14 - what we researched (your asks)
+
+You asked me to research Mira and you shared your Brazil network. I did the homework:
+
+- **Mira** - you were right that it's ahead, genuinely impressive. BUT it learns from every chat it's in and stores that memory on its own servers, outside our control. For our private graph work that's a real privacy problem, so we're keeping it out of the coordination space. Great that you surfaced it - we'll study it as a competitor, not run our private work through it.
+- **Your Brazil network checks out as real.** Juscelino/Sentinela Web3 (registered company), Mucida/Upland BR (official moderator), Castaneda/CastaCrypto (real builder) - all confirmed. That's exactly the asset to lean on.
+- **One honest flag: the BNDES path won't work the way described.** BNDES doesn't fund small foreign crypto/arts projects - it's the wrong mandate. So let's not build the plan around BNDES money. The PEOPLE are the value; the grant story isn't. Lean on the network.
+- **Noted + appreciated:** you clarified you were separating working-memory from stored facts and told the bot not to store some things. That's the right instinct - that distinction is exactly what keeps the graph clean. Keep doing that.
