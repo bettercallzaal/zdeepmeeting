@@ -8,6 +8,7 @@ DeepMeeting is a networking / knowledge protocol run by GCvlcnti (alias DvlsMojo
 
 | Path | What |
 |------|------|
+| `bonfire-hub/` | The ZABAL Bonfire hub - graph instances, agents, ontology, research index, vocabulary hygiene. |
 | `transcript/` | Redacted full backlog of the group chat (emails/phones stripped). |
 | `links/` | Index of links shared in the group. |
 | `CONTEXT.md` | The relationship, governance, and the ZAO DeepMeeting bot plan. |
