@@ -1,0 +1,15 @@
+# Raw Telegram exports - PII, never commit (public repo)
+**/raw/
+*ChatExport*
+messages*.html
+*.gmail.json
+*.gcal.json
+*.contacts.json
+*.private.json
+**/.private/
+
+# OS / editor
+.DS_Store
+node_modules/
+.env
+.env.*
