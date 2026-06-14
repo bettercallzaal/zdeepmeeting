@@ -52,9 +52,43 @@ A knowledge-graph-as-a-service that captures group chats (Telegram/Discord) into
 - MCP server install path (referenced in docs, no public command)
 - Custom slug for zabal.bonfires.ai (was pending)
 
+## Deeper mechanics (from SDK source, 2026-06-14)
+
+### kEngrams - the real methods
+`kengram.create(name, kind="session"|"topic")`, `.pin(entity, summary, labels, attrs)` (mints a UUID), `.add_edge(src, tgt, predicate, fact)`, `.export(format="canvas"|"plan"|"owl")`, `.verify()` (Merkle-root check), `.merge(other)`, `.push()` (sync to canonical graph). The **Merkle root** over the pinned entity+edge set = cryptographic proof of no-tampering; a kEngram can be notarized/verified offline without Bonfires infra. Export "plan" = a topological task DAG inferred from the edges. This is the portability + provenance story.
+
+### Ontology Profiles - how partitioning actually works
+`create_profile(name, namespaces, class_map, object_property_map, datatype_property_map)` -> profile_id; `attach_profile(kengram_id, profile_id)` -> validation report; `extract_gaps(kengram_id)` -> list of constraint violations each with a `reason` (cardinality / type mismatch) + `remediation`. A "gap" = a node that breaks the profile's rules. Validation annotations get written into the kEngram manifest (immutable) -> offline audit. This is the mechanism that lets one ZABAL bonfire hold clean sub-domains.
+
+### The 12 constraints - the mechanical cure for graph pollution
+This is the important one for the GCvlcnti problem. A good graph is enforced, not hoped for:
+1. **Explicit-ingest only** - nodes created only on explicit request; operational chat never auto-ingests.
+2. **Dedupe before create** - search (name,type) first, merge, never duplicate.
+3. **Active-voice edges only** - `A -[founded]-> B`, never inverse/passive. Kills ambiguity.
+4. Title normalization (canonical names, strip prefixes).
+5. Topics are node **attributes**, not standalone entities.
+6. Never ingest bot ops / setup / meta.
+7. State truthfulness (claim must match reality).
+8. Verbatim quote preservation.
+9. **Provenance on every node**: source_url, source_kind, confidence (0-1), authored_by, valid_window.
+10. Identity faceting - one Person, many role edges, never duplicate people.
+11. Speaker routing - always identify sender; unknown -> ask -> stub.
+12. **Temporal evolution** - beliefs change via a NEW node + `supersedes` edge; never overwrite.
+
+The TreeUnix/NOVO-NODO pollution is exactly constraints 1, 2, 5, and 9 not being honored. The fix isn't policing GCvlcnti - it's enforcing these + giving him an ontology profile.
+
+### Other novel bits
+- **TrimTab semantic grammars** - template-free agent generation; define grammar+rules, agent picks the best rule variant per context via embeddings. (Internal, under-documented.)
+- **Two-phase commit (`sync`)** - `/stack/add` (queue) then `/stack/process` (async KG update) + poll status. Built for unreliable agents (Telegram bots) so no context is lost on a crash.
+- **`chat(graph_mode=...)`** - adaptive | static | regenerate | append - controls how much graph context the agent pulls per message.
+- **`ingest.py` is zero-dependency** (stdlib only) - forkable / air-gappable.
+
+### Correction: ERC-7857 INFTs = UNVERIFIED
+The "agents are ERC-7857 Intelligent NFTs on 0G" claim is NOT in the v0.4.0 source - zero hits in the SDK, tools, or org repos. Treat as roadmap/marketing or a separate effort, not a live SDK feature. (Downgrades the earlier note.)
+
 ## Sources
 
+- github.com/NERDDAO/bonfires-sdk (v0.4.0) - kengram.py, ontology.py, agents.py, trimtab.py, kg.py
+- github.com/NERDDAO/bonfire-tools - ingest.py
 - bonfires.ai, docs.bonfires.ai, publish.obsidian.md/bonfires
-- github.com/NERDDAO/bonfires-sdk (v0.4.0)
-- 0G ERC-7857 standard (0g.ai)
 - ZAOOS docs 665, 669 (baseline, partly stale)
