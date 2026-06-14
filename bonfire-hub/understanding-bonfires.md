@@ -109,8 +109,38 @@ NERDDAO (the org behind Bonfires) is a broad, playful builder community. Notable
 ### The standout: x402 ties into what ZAO is already doing
 ZAO is already building WaveWarZ on Base with **x402** (agents pay to place bets). Bonfires has **x402-gated graph APIs**. So the two converge: you could x402-gate the ZABAL graph - let WaveWarZ/other agents pay per-query to read ZAO knowledge. The bonfire graph + x402 + WaveWarZ agents is one coherent stack, not three separate things. This is the most actionable thread from the whole dig.
 
+## How x402-gating the graph actually works (hands-on, 2026-06-14)
+
+From the real `x402-gated-api` repo - the flow to charge agents per-query:
+1. Caller hits the API endpoint -> server returns **HTTP 402** (Payment Required).
+2. Caller signs a payment authorization (wallet).
+3. Server verifies + settles via a **thirdweb x402 facilitator** on-chain.
+4. On success -> HTTP 200 + the premium content (here: the graph query result).
+
+Setup is just env: thirdweb client id/secret + a **funded server wallet address**. `scaffold-x402-bonfires` is a scaffold-eth-2 fork (NextJS + Wagmi/Viem/Foundry) for the dapp side. So to x402-gate the ZABAL graph: wrap the recall endpoint in this 402 flow. **This is the same x402 + thirdweb + Base stack ZAO is already building for WaveWarZ** - not a new thing to learn, the same pattern pointed at the graph.
+
+## Bonfires is multi-framework (plugs into everything)
+
+- **Fetch.ai / ASI:One uAgents** - `bonfire-fetch` wires Bonfires in as a "semantic backend (taxonomies + vector storage + chunk search)" for the uAgent network.
+- **MCP** - `mindmap-mcp-server` -> read the graph from Claude.
+- **CrewAI** - `memento-mori` runs 42 agents on the graph.
+- **SDK** - ZOE/Hermes read it directly (Python CLI).
+
+Plain-English self-description from the source: Bonfires is "a semantic backend that creates taxonomies for documents and stores them in vector storage; ingests documents and uses chunk search to find contextual data for the agent."
+
+## The converged picture (what this all means for ZAO)
+
+- **ZABAL graph = the knowledge asset.**
+- **ZOE / Hermes read it free** (internal, via SDK).
+- **External agents pay-per-query via x402** (thirdweb facilitator, Base, funded server wallet) = the "Knowledge Network" revenue model, made concrete.
+- It's the **same x402 stack as WaveWarZ** - graph + x402 + WaveWarZ agents = one coherent system.
+- Hygiene is enforced by the **12 constraints + ontology profiles** (so GCvlcnti's vocabulary lives in a profile, main graph stays clean).
+
+That's the actionable end-state. The learning has converged; the next move is building (wire ZOE to the graph; spec the x402 gate), not more research.
+
 ## Sources
 
+- github.com/NERDDAO/x402-gated-api, scaffold-x402-bonfires, bonfire-fetch (READMEs, 2026-06-14)
 - github.com/NERDDAO (org, ~40 repos) - graphiti, trimtab, x402-gated-api, scaffold-x402-bonfires, mindmap-mcp-server, bonfire-tools, obsidian-kengram
 - github.com/NERDDAO/bonfires-sdk (v0.4.0) - kengram.py, ontology.py, agents.py, trimtab.py, kg.py; CLI: bonfire init / chat
 - github.com/NERDDAO/bonfire-tools - ingest.py
