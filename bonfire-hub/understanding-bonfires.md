@@ -86,9 +86,33 @@ The TreeUnix/NOVO-NODO pollution is exactly constraints 1, 2, 5, and 9 not being
 ### Correction: ERC-7857 INFTs = UNVERIFIED
 The "agents are ERC-7857 Intelligent NFTs on 0G" claim is NOT in the v0.4.0 source - zero hits in the SDK, tools, or org repos. Treat as roadmap/marketing or a separate effort, not a live SDK feature. (Downgrades the earlier note.)
 
+## The NERDDAO ecosystem + CLI (hands-on, 2026-06-14)
+
+NERDDAO (the org behind Bonfires) is a broad, playful builder community. Notable repos:
+
+- **graphiti** - "Real-Time Knowledge Graphs for AI Agents". Likely the KG engine Bonfires is built on/around. Worth knowing - it's a known framework.
+- **trimtab** - the semantic-grammar generation engine (its own repo).
+- **x402-gated-api** + **scaffold-x402-bonfires** - **payment-gated API endpoints via x402.** This is the real mechanism behind the "Knowledge Network" revenue idea: charge external agents to query your graph, paid per-call with x402. Not vaporware - there are scaffold repos.
+- **mindmap-mcp-server** + **MCP-PIF** - MCP servers -> Bonfires can be wired into Claude/Claude Desktop via MCP.
+- **obsidian-kengram** - Obsidian plugin for the kEngram export path.
+- **bonfire-rpg** / **memento-mori** - games using the KG as shared world memory (a 42-agent permadeath MUD on CrewAI). Shows the graph as a live substrate.
+- **synthesis-frontend** - a "hyperblog" that aggregates Bonfires "synthesis events" into a feed.
+- **bonfires-experiments** - "Awesome Bonfires" curated list of what's built on it.
+- Plus: spritz (web3 chat), moltbot (cross-platform assistant), grants-stack fork, scaffold-eth forks.
+
+### The CLI (real surface)
+- Install: `pip install git+https://github.com/NERDDAO/bonfire-cli.git`
+- `bonfire init` - interactive wizard; lists your bonfires + agents; saves creds to `~/.config/bonfires/config.env`
+- `bonfire chat "hello"` - message your agent
+- Client API: `client.kg.{search,get_entity,create_entity,create_edge}`, `client.agents.{chat(graph_mode=),sync,list}`, `client.kengrams.{create,pin,add_edge,batch,verify,export,push}`, `client.ontology.{create_profile,attach_profile,extract_gaps}`
+
+### The standout: x402 ties into what ZAO is already doing
+ZAO is already building WaveWarZ on Base with **x402** (agents pay to place bets). Bonfires has **x402-gated graph APIs**. So the two converge: you could x402-gate the ZABAL graph - let WaveWarZ/other agents pay per-query to read ZAO knowledge. The bonfire graph + x402 + WaveWarZ agents is one coherent stack, not three separate things. This is the most actionable thread from the whole dig.
+
 ## Sources
 
-- github.com/NERDDAO/bonfires-sdk (v0.4.0) - kengram.py, ontology.py, agents.py, trimtab.py, kg.py
+- github.com/NERDDAO (org, ~40 repos) - graphiti, trimtab, x402-gated-api, scaffold-x402-bonfires, mindmap-mcp-server, bonfire-tools, obsidian-kengram
+- github.com/NERDDAO/bonfires-sdk (v0.4.0) - kengram.py, ontology.py, agents.py, trimtab.py, kg.py; CLI: bonfire init / chat
 - github.com/NERDDAO/bonfire-tools - ingest.py
 - bonfires.ai, docs.bonfires.ai, publish.obsidian.md/bonfires
 - ZAOOS docs 665, 669 (baseline, partly stale)
