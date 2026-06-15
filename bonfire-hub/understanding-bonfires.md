@@ -138,8 +138,22 @@ Plain-English self-description from the source: Bonfires is "a semantic backend 
 
 That's the actionable end-state. The learning has converged; the next move is building (wire ZOE to the graph; spec the x402 gate), not more research.
 
+## The engine underneath: Graphiti (Zep) - learning complete
+
+Bonfires is built on **Graphiti**, an open-source temporal-knowledge-graph framework by **Zep** (getzep.com, arXiv 2501.13956, a popular well-funded OSS project). This is the foundation, and it explains everything else:
+
+- **Temporal context graphs** - every fact has a **validity window** (when it became true, when superseded); entities evolve; everything traces back to **episodes** (raw source data). -> this IS Bonfires' "episodes -> nodes/edges", the `supersedes` edge (constraint 12), and `valid_window` provenance.
+- **Hybrid retrieval** - semantic + keyword + graph traversal. -> Bonfires' `/delve`.
+- **Incremental updates** without full recompute; **prescribed AND learned ontology** -> the ontology-profiles feature.
+- **Graphiti ships its own MCP server** -> the MCP path is real at the engine level.
+
+**What this means (the de-risk):** Bonfires = Graphiti (mainstream, paper-backed, open-source engine) + a Telegram/agent layer + kEngrams (merkle-portable subgraphs) + x402 gating + $KNOW. The core is NOT a fragile startup primitive - it's Zep's proven framework. So lock-in is genuinely low: kEngrams export to markdown/canvas/owl AND the engine itself is OSS - if Bonfires ever sunset, ZAO could self-host Graphiti and keep the graph.
+
+**Learning verdict: complete.** Top to bottom: Graphiti (engine) -> Bonfires (product: Telegram bots, kEngrams, the 12 constraints, ontology profiles) -> x402/$KNOW (money) -> ZAO's ZABAL bonfire (our instance, ZOE/Hermes read it). The next move is building, not researching.
+
 ## Sources
 
+- github.com/NERDDAO/graphiti (fork of getzep/graphiti) + getzep.com + arXiv 2501.13956
 - github.com/NERDDAO/x402-gated-api, scaffold-x402-bonfires, bonfire-fetch (READMEs, 2026-06-14)
 - github.com/NERDDAO (org, ~40 repos) - graphiti, trimtab, x402-gated-api, scaffold-x402-bonfires, mindmap-mcp-server, bonfire-tools, obsidian-kengram
 - github.com/NERDDAO/bonfires-sdk (v0.4.0) - kengram.py, ontology.py, agents.py, trimtab.py, kg.py; CLI: bonfire init / chat
